@@ -3,7 +3,7 @@ function HomePage(){
 
     return(
         <Fragment>
-            
+            <div>hi</div>
         </Fragment>
     )
 }
