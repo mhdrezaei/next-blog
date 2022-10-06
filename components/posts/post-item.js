@@ -1,41 +1,43 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { Grid } from '@mui/material';
-
+import * as React from "react";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import { Grid } from "@mui/material";
+import Image from "next/image";
+import Link from "next/link";
 function PostItem(props) {
-  console.log(props)
-  const { title , image , date , description} = props.post
+  const { title, image, slug, description } = props.post;
+  const href = `/posts/${slug}`;
   return (
-    <Grid item xl={4} >
-
-      
-    <Card sx={{ maxWidth: 345 }}>
-    <CardMedia
+    <Grid item md={4} sm={6} sx={12}>
+      <Card>
+        {/* <CardMedia
       component="img"
       height="140"
-      image="/static/images/cards/contemplative-reptile.jpg"
-      alt="green iguana"
-    />
-    <CardContent>
-      <Typography gutterBottom variant="h5" component="div">
-        {title}
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-        {description}
-      </Typography>
-    </CardContent>
-    <CardActions>
-      <Button size="small">Share</Button>
-      <Button size="small">Learn More</Button>
-    </CardActions>
-  </Card>
+      image={image}
+      alt={title}
+    /> */}
+        <Image src={image} alt={title} width={400} height={200} />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {description}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button size="small">Share</Button>
+          <Link href={href} >
+            <Button size="small">Learn More</Button>
+          </Link>
+        </CardActions>
+      </Card>
     </Grid>
-  )
+  );
 }
 
-export default PostItem
+export default PostItem;
