@@ -6,7 +6,7 @@ function HomePage(props){
     return(
         <Fragment>
             <Hero/>
-            <ListPost posts={props.posts} headng='Featured Posts' />
+            <ListPost posts={props.posts} heading='Featured Posts' showBtn='true' linkTo='/posts' />
         </Fragment>
     )
 }

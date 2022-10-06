@@ -7,7 +7,8 @@
         "Everyone can learn to code! Yes, everyone! In this live event, we are going to go through all the key basics and get you started with programming as well.",
       "location": "Somestreet 25, 12345 San Somewhereo",
       "date": "2021-05-12",
-      "image": "images/posts/programing-event.jpg",
+      "image": "/images/posts/programing-event.jpg",
+      "slug" : "programming-for-everyone",
       "isFeatured": false
     },
     {
@@ -17,17 +18,19 @@
         "We know Networking is no fun if you are an introvert person. Thats why we came up with this event - it will be so much easier. Promised!",
       "location": "New Wall Street 5, 98765 New Work",
       "date": "2021-05-30",
-      "image": "images/posts/networking-event.jpg",
+      "image": "/images/posts/networking-event.jpg",
+      "slug" : "Networking-for-introverts",
       "isFeatured": true
     },
     {
       "id": "p3",
       "title": "Class for extroverts",
       "description":
-        "You probably need no help with networking in general. But focusing your energy correctly - that is something where most people can improve.You probably need no help with networking in general. But focusing your energy correctly - that is something where most people can improve.",
+        "You probably need no help with networking in general. But focusing your energy correctly - that is something where most people can improve.",
       "location": "My Street 12, 10115 Broke City",
       "date": "2022-04-10",
-      "image": "images/posts/class-event.jpg",
+      "image": "/images/posts/class-event.jpg",
+      "slug" : "class-for-extroverts",
       "isFeatured": true
     },
     {
@@ -37,7 +40,8 @@
         "You probably need no help with networking in general. But focusing your energy correctly - that is something where most people can improve.",
       "location": "My Street 12, 10115 Broke City",
       "date": "2022-04-10",
-      "image": "images/posts/consert-event.jpg",
+      "image": "/images/posts/consert-event.jpg",
+      "slug" : "consert-for-music",
       "isFeatured": true
     }
   ]

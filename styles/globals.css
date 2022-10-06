@@ -15,6 +15,9 @@ a {
 * {
   box-sizing: border-box;
 }
+.heading{
+  text-align: center;
+}
 
 @media (prefers-color-scheme: dark) {
   html {
