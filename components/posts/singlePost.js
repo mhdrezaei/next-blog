@@ -3,7 +3,9 @@ import React from 'react'
 import Image from 'next/image'
 import theme from '../layout/theme'
 import IconLabelButtons from '../ui/button-showall'
+import HeaderPost from './header-post'
 const Wrapper = styled('div')({
+    position : "relative",
     backgroundColor : theme.palette.secondary.main,
     borderRadius : 10,
     marginTop : 50,
@@ -12,6 +14,7 @@ const Wrapper = styled('div')({
 
     "& .image":{
         overflow: "hidden",
+        filter : "blur(3px)"
     },
     "& .head-post":{
         display : "flex",
@@ -25,7 +28,6 @@ const Wrapper = styled('div')({
 
 })
 function SinglePost(props) {
-    console.log(props)
     const {post} = props;
     const { title, description , date , image } = post[0];
     console.log(title)
@@ -38,14 +40,10 @@ function SinglePost(props) {
     <div>
         <Container>
         <Wrapper>
+        <HeaderPost title={title} image={image} date={newDate} />
             <div className='image' >
                 <Image src={image} alt={title} width={1152} height={700} />
-            </div>
-            <div className='head-post'>
-            <h2>{title}</h2>
-            <span>{newDate}</span>
-            </div>
-            <hr/>
+            </div>            
             <p className='description'>{description}</p>
         </Wrapper>  
 
