@@ -11,6 +11,7 @@ import Link from "next/link";
 function PostItem(props) {
   const { title, image, slug, description } = props.post;
   const href = `/posts/${slug}`;
+  const src = `/images/posts/${image}`;
   return (
     <Grid item md={4} sm={6} sx={12}>
       <Card>
@@ -20,7 +21,7 @@ function PostItem(props) {
       image={image}
       alt={title}
     /> */}
-        <Image src={image} alt={title} width={400} height={200} />
+        <Image src={src} alt={title} width={400} height={200} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {title}

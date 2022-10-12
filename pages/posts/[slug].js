@@ -1,4 +1,4 @@
-import { getData } from "../../helper/util-post";
+import { getSinglePostData } from "../../helper/util-post";
 import PostItem from "../../components/posts/post-item";
 import { Fragment } from "react";
 import { Breadcrumbs } from "@mui/material";
@@ -8,7 +8,7 @@ import SinglePost from "../../components/posts/singlePost";
 
 
 function SinglePostPage(props){
-    
+    console.log(props)
     const router = useRouter();
     const path = router.asPath;
     return(
@@ -25,10 +25,8 @@ function SinglePostPage(props){
 export async function getServerSideProps(context){
 const {params} = context;
 const slug = params.slug;
-const fetchedData = getData();
-const thePost = fetchedData.posts.filter(post => post.slug === slug);
 
-
+const thePost = getSinglePostData(slug);
 return {
     props:{
         post : thePost

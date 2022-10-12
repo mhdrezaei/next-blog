@@ -4,6 +4,7 @@ import Image from 'next/image'
 import theme from '../layout/theme'
 import IconLabelButtons from '../ui/button-showall'
 import HeaderPost from './header-post'
+import ReactMarkdown from "react-markdown"
 const Wrapper = styled('div')({
     position : "relative",
     backgroundColor : theme.palette.secondary.main,
@@ -23,14 +24,19 @@ const Wrapper = styled('div')({
         padding : 10,
     },
     "& .description" :{
-        padding : 20
+        padding : 20,
+        "& a":{
+            textDecoration : "underline",
+            color : theme.palette.primary.main
+        }
     }
 
 })
 function SinglePost(props) {
     const {post} = props;
-    const { title, description , date , image } = post[0];
-    console.log(title)
+    const { title, description , date , image , content } = post;
+    const src = `/images/posts/${image}`
+    console.log(content)
     const newDate = new Date(date).toLocaleString('en-us' , {
         year: 'numeric',
         month: 'long',
@@ -40,11 +46,13 @@ function SinglePost(props) {
     <div>
         <Container>
         <Wrapper>
-        <HeaderPost title={title} image={image} date={newDate} />
+        <HeaderPost title={title} image={src} date={newDate} />
             <div className='image' >
-                <Image src={image} alt={title} width={1152} height={700} />
-            </div>            
-            <p className='description'>{description}</p>
+                <Image src={src} alt={title} width={1152} height={700} />
+            </div>      
+            <p className='description'>
+            <ReactMarkdown>{content}</ReactMarkdown>      
+            </p>
         </Wrapper>  
 
         <IconLabelButtons path='/posts' />

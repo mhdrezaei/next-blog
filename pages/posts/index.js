@@ -2,7 +2,7 @@ import PageBreadcrumbs from "../../components/layout/breadcrumb";
 import {useRouter} from "next/router"
 import { Fragment } from "react";
 import ListPost from "../../components/posts/list-post";
-import { getData } from "../../helper/util-post";
+import { getAllPost } from "../../helper/util-post";
 
 
 function AllPostPage(props){
@@ -19,8 +19,8 @@ function AllPostPage(props){
 }
 
 export async function getStaticProps(){
-    const fetchedData = getData();
-    const allPost = fetchedData.posts;
+    // const fetchedData = getData();
+    const allPost = getAllPost();
     console.log(allPost)
 
     return{

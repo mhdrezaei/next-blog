@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import Hero from "../components/home/hero";
 import ListPost from "../components/posts/list-post";
-import { getData } from "../helper/util-post";
+import { getFeaturedPost } from "../helper/util-post";
 function HomePage(props){
     return(
         <Fragment>
@@ -12,9 +12,9 @@ function HomePage(props){
 }
 
 export async function getStaticProps(){
-    const fetchedData = getData();
-    const featuredPost = fetchedData.posts.filter(post => post.isFeatured);
 
+    // const featuredPost = fetchedData.posts.filter(post => post.isFeatured);
+    const featuredPost = getFeaturedPost()
     return{
         props:{
             posts : featuredPost
