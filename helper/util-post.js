@@ -13,13 +13,26 @@ export function getData() {
   return posts;
 }
 
-const pathDirectori = path.join(process.cwd(), "content");
+const pathDirectori = path.join(process.cwd(), "content" , "posts");
 
-function getPostData(fileName) {
+export function getPostData(fileName) {
   const pathFile = path.join(pathDirectori, fileName);
   const fileContent = fs.readFileSync(pathFile);
   const { data, content } = matter(fileContent);
   const postSlug = fileName.replace(/\.md$/, "");
+  const newPostData = {
+    slug: postSlug,
+    ...data,
+    content,
+  };
+  return newPostData;
+}
+
+export function getSinglePostData(fileName) {
+  const postSlug = fileName.replace(/\.md$/, "");
+  const pathFile = path.join(pathDirectori, `${postSlug}.md`);
+  const fileContent = fs.readFileSync(pathFile);
+  const { data, content } = matter(fileContent);
   const newPostData = {
     slug: postSlug,
     ...data,
@@ -42,7 +55,8 @@ export function getAllPost() {
 
 export function getFeaturedPost() {
   const allPosts = getAllPost();
-  const featured = allPosts.filter((post) => post.isFeatured);
+  const featured = allPosts.filter(post => post.isFeatured);
+  console.log(featured)
 
   return featured;
 }
