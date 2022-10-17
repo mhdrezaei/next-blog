@@ -15,4 +15,12 @@ You probably need no help with networking in general. But focusing your energy c
 
 You probably need no help with networking in general. But focusing your energy correctly - that is something where most people can improve. [mysite](https://mhdrezaei.ir) You probably need no help with networking in general. But focusing your energy correctly - that is something where most people can improve.
 
+- item 1
+- item 2
+- item 4
+- item 5
+
+
+![You probably need no help with networking](class-for-extroverts.jpg)
+
 You probably need no help with networking in general. But focusing your energy correctly - that is something where most people can improve.
