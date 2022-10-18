@@ -1,13 +1,13 @@
 import path from "path";
 import fs from "fs";
 import matter from "gray-matter";
-export function createPath() {
-  const filePath = path.join(process.cwd(), "data", "data.json");
+export function createPath(fileName) {
+  const filePath = path.join(process.cwd(), "data", fileName);
   return filePath;
 }
 
 export function getData() {
-  const filePath = createPath();
+  const filePath = createPath('data.json');
   const fileData = fs.readFileSync(filePath);
   const posts = JSON.parse(fileData);
   return posts;
@@ -60,3 +60,6 @@ export function getFeaturedPost() {
 
   return featured;
 }
+
+
+
