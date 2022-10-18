@@ -8,7 +8,6 @@ import SinglePost from "../../components/posts/singlePost";
 
 
 function SinglePostPage(props){
-    console.log(props)
     const router = useRouter();
     const path = router.asPath;
     return(
