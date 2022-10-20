@@ -4,7 +4,8 @@ import theme from "../layout/theme";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
-import SendIcon from '@mui/icons-material/Send';
+import SendIcon from "@mui/icons-material/Send";
+import CircularProgress from "@mui/material/CircularProgress";
 const Wrapper = styled("div")({
   position: "relative",
   backgroundColor: theme.palette.secondary.main,
@@ -18,66 +19,133 @@ const Wrapper = styled("div")({
     color: theme.palette.primary.main,
     fonyFamily: "cursive",
   },
-  "& .btn-div":{
-    textAlign : "center",
-    padding : 20
-  }
+  "& .btn-div": {
+    textAlign: "center",
+    padding: 20,
+  },
 });
-function ContactForm() {
 
-  const [hasError , setHasError] = useState({errorName : false ,errorEmail : false ,errorMessage : false });
-  const [alert , setAlert] = useState({alertName : '' , alertEmail : '' , alertMessage : ''});
-  const [status , setStatus] = useState('');
-  const [enteredName , setEnteredName] = useState('');
-  const [enteredEmail , setEnteredEmail] = useState('');
-  const [enteredMessage , setEnteredMessage] = useState('');
-  
-  async function sendContactData(contactDetail){
+async function sendContactData(contactDetal) {
+  const response = await fetch("/api/contact", {
+    method: "POST",
+    body: JSON.stringify(contactDetal),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-    useEffect(() => {
-     
-  
-    }, [hasError])
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "something went wrong");
   }
-  
-  const submitHandler = (event) => {
-    event.preventDefault();
-    if (enteredName === '' || enteredName.trim() === '' || enteredName.length < 2){
-      setHasError({errorName : true})
-      setAlert({alertName : 'Enter Your Name!'})
-    }else{
-      setHasError({errorName : false})
-      setAlert({alertName : ''})
+}
+
+function ContactForm() {
+  const [hasError, setHasError] = useState({
+    errorName: false,
+    errorEmail: false,
+    errorMessage: false,
+    errorRequest: false,
+  });
+  const [alert, setAlert] = useState({
+    alertName: "",
+    alertEmail: "",
+    alertMessage: "",
+    alertRequest: "",
+  });
+  const [status, setStatus] = useState("");
+  const [enteredName, setEnteredName] = useState("");
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [enteredMessage, setEnteredMessage] = useState("Type your message here ...");
+
+  useEffect(() => {
+    if (status === "success" || status === "error") {
+      const timer = setTimeout(() => {
+        setStatus("");
+        setAlert({
+          alertName: "",
+          alertEmail: "",
+          alertMessage: "",
+          alertRequest: "",
+        });
+      }, 3000);
+
+      return () => clearTimeout(timer);
     }
+  }, [status]);
 
-    
-
+  async function submitHandler(event) {
+    event.preventDefault();
+    if (enteredName === "" || enteredName.trim() === "") {
+      setHasError({ errorName: true });
+      setAlert({ alertName: "Your Name is necessary!" });
+      return false;
+    }
+    if (!enteredEmail.includes("@") || !enteredEmail.includes(".") || enteredEmail === "" || enteredEmail.trim() === "") {
+      setHasError({ errorEmail: true });
+      setAlert({ alertEmail: "Your Email is necessary und musst be valid!" });
+      return false;
+    }
+    if (enteredMessage.length < 15 || !enteredMessage.trim() === "") {
+      setHasError({ errorMessage: true });
+      setAlert({ alertMessage: "Your Message is to short!" });
+      return false;
+    }
+    setStatus("pending");
+    try {
+      setTimeout(() =>{
+        sendContactData({
+          name: enteredName,
+          email: enteredEmail,
+          message: enteredMessage,
+        });
+        setStatus("success");
+        setEnteredName("");
+        setEnteredEmail("");
+        setEnteredMessage("Type your message here ...");
+      },3000)
+    } catch (error) {
+      setStatus("error");
+      setHasError({ errorMessage: true });
+      setAlert({ alertRequest: error.message });
+    }
   }
   function nameOnChange(event) {
     setEnteredName(event.target.value);
-    if(enteredName.length < 2){
-      setHasError({errorName : true})
-    setAlert({alertName : 'Your Name is short!'})
-    }else{
-      setHasError({errorName : false})
-    setAlert({alertName : ''})
+    if (enteredName.length < 2) {
+      setHasError({ errorName: true });
+      setAlert({ alertName: "Your Name is short!" });
+    } else {
+      setHasError({ errorName: false });
+      setAlert({ alertName: "" });
+    }
+  }
+  function messageOnChange(event) {
+    setEnteredMessage(event.target.value);
+    if (enteredMessage.length < 15 || !enteredMessage.trim() === "") {
+      setHasError({ errorMessage: true });
+      setAlert({ alertMessage: "Your Message is to short!" });
+    } else {
+      setHasError({ errorMessage: false });
+      setAlert({ alertMessage: "" });
     }
   }
   function emailOnChange(event) {
     setEnteredEmail(event.target.value);
-    if(!enteredEmail.includes('@') || !enteredEmail.includes('.') ){
-      setHasError({errorEmail : true})
-    setAlert({alertEmail : 'Your Email is invalid!'})
-    }else{
-      setHasError({errorEmail : false})
-    setAlert({alertEmail : ''})
+    if (!enteredEmail.includes("@") || !enteredEmail.includes(".")) {
+      setHasError({ errorEmail: true });
+      setAlert({ alertEmail: "Your Email is invalid!" });
+    } else {
+      setHasError({ errorEmail: false });
+      setAlert({ alertEmail: "" });
     }
   }
   return (
     <Container>
       <Wrapper>
         <h1 className="heading">Contact form</h1>
-        <form onSubmit={submitHandler} >
+        <form onSubmit={submitHandler}>
           <Box
             component="div"
             sx={{
@@ -91,9 +159,9 @@ function ContactForm() {
               label="Your Name"
               type="text"
               name="name"
-              
-              error={hasError.errorName ? 'error' : ''}
-              helperText={alert.alertName ? alert.alertName : ''}
+              value={enteredName}
+              error={hasError.errorName ? true : false}
+              helperText={alert.alertName ? alert.alertName : ""}
               onChange={nameOnChange}
             />
             <TextField
@@ -101,8 +169,9 @@ function ContactForm() {
               label="Email Address"
               type="email"
               name="email"
-              error={hasError.errorEmail ? 'error' : ''}
-              helperText={alert.alertEmail ? alert.alertEmail : ''}
+              value={enteredEmail}
+              error={hasError.errorEmail ? true : false}
+              helperText={alert.alertEmail ? alert.alertEmail : ""}
               onChange={emailOnChange}
             />
           </Box>
@@ -119,13 +188,26 @@ function ContactForm() {
               label="Message"
               multiline
               rows={4}
-              defaultValue="Type your message here ..."
+              defaultValue={enteredMessage}
               name="message"
-              // onChange={setEnteredMessage((e) => e.target.value)}
+              value={enteredMessage}
+              error={hasError.errorMessage ? true : false}
+              helperText={alert.alertMessage ? alert.alertMessage : ""}
+              onChange={messageOnChange}
             />
           </Box>
           <div className="btn-div">
-            <Button type="submit" variant="contained" endIcon={<SendIcon />}>
+            <Button
+              type="submit"
+              variant="contained"
+              endIcon={
+                status === "pending" ? (
+                  <CircularProgress size={20} color="inherit" />
+                ) : (
+                  <SendIcon />
+                )
+              }
+            >
               Send
             </Button>
           </div>
