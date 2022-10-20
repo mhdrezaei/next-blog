@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import CircularProgress from "@mui/material/CircularProgress";
+import Notification from "../ui/notification";
 const Wrapper = styled("div")({
   position: "relative",
   backgroundColor: theme.palette.secondary.main,
@@ -39,6 +40,7 @@ async function sendContactData(contactDetal) {
   if (!response.ok) {
     throw new Error(data.message || "something went wrong");
   }
+  return data.message;
 }
 
 function ContactForm() {
@@ -57,7 +59,9 @@ function ContactForm() {
   const [status, setStatus] = useState("");
   const [enteredName, setEnteredName] = useState("");
   const [enteredEmail, setEnteredEmail] = useState("");
-  const [enteredMessage, setEnteredMessage] = useState("Type your message here ...");
+  const [enteredMessage, setEnteredMessage] = useState(
+    "Type your message here ..."
+  );
 
   useEffect(() => {
     if (status === "success" || status === "error") {
@@ -82,7 +86,12 @@ function ContactForm() {
       setAlert({ alertName: "Your Name is necessary!" });
       return false;
     }
-    if (!enteredEmail.includes("@") || !enteredEmail.includes(".") || enteredEmail === "" || enteredEmail.trim() === "") {
+    if (
+      !enteredEmail.includes("@") ||
+      !enteredEmail.includes(".") ||
+      enteredEmail === "" ||
+      enteredEmail.trim() === ""
+    ) {
       setHasError({ errorEmail: true });
       setAlert({ alertEmail: "Your Email is necessary und musst be valid!" });
       return false;
@@ -94,17 +103,19 @@ function ContactForm() {
     }
     setStatus("pending");
     try {
-      setTimeout(() =>{
-        sendContactData({
+      setTimeout(() => {
+        const sendMessage = sendContactData({
           name: enteredName,
           email: enteredEmail,
           message: enteredMessage,
         });
+        console.log(sendMessage.message);
         setStatus("success");
+        setAlert({ alertRequest: sendMessage.message });
         setEnteredName("");
         setEnteredEmail("");
         setEnteredMessage("Type your message here ...");
-      },3000)
+      }, 3000);
     } catch (error) {
       setStatus("error");
       setHasError({ errorMessage: true });
@@ -141,6 +152,33 @@ function ContactForm() {
       setAlert({ alertEmail: "" });
     }
   }
+
+  let notification;
+
+  if (status === "pending") {
+    notification = {
+      status: "pending",
+      title: "Sending message...",
+      message: "Your message is on its way!",
+    };
+  }
+
+  if (status === "success") {
+    notification = {
+      status: "success",
+      title: "Success!",
+      message: "Message sent successfully!",
+    };
+  }
+
+  if (status === "error") {
+    notification = {
+      status: "error",
+      title: "Error!",
+      message: requestError,
+    };
+  }
+
   return (
     <Container>
       <Wrapper>
@@ -190,7 +228,6 @@ function ContactForm() {
               rows={4}
               defaultValue={enteredMessage}
               name="message"
-              value={enteredMessage}
               error={hasError.errorMessage ? true : false}
               helperText={alert.alertMessage ? alert.alertMessage : ""}
               onChange={messageOnChange}
@@ -211,6 +248,13 @@ function ContactForm() {
               Send
             </Button>
           </div>
+          {notification && (
+            <Notification
+              status={notification.status}
+              title={notification.title}
+              message={notification.message}
+            />
+          )}
         </form>
       </Wrapper>
     </Container>
