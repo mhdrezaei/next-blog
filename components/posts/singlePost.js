@@ -7,6 +7,7 @@ import HeaderPost from "./header-post";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import Comments from "../comments/Comments";
 const Wrapper = styled("div")({
   position: "relative",
   backgroundColor: theme.palette.secondary.main,
@@ -74,7 +75,7 @@ function SinglePost(props) {
             <ReactMarkdown   components={cutomRenderers}>{content}</ReactMarkdown>
           </div>
         </Wrapper>
-
+        <Comments/>
         <IconLabelButtons path="/posts" />
       </Container>
     </div>
