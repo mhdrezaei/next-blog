@@ -48,7 +48,7 @@ function HeaderPost(props) {
     <h1 className='post-title'>{props.title}</h1>
     <span className='post-date' >{props.date}</span>
     </div>
-    <Image className='post-thumb'  src={props.image} width={600} height={500}/>
+    <Image className='post-thumb' alt={props.title} src={props.image} width={600} height={500}/>
     </HeadPost>
   )
 }

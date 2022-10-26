@@ -10,7 +10,7 @@ function ListPost(props) {
     <Container>
       <h1 className='heading'>{heading}</h1>
       <Grid container spacing={2} >
-      {props.posts.map((post) => <PostItem post={post} />)}
+      {props.posts.map((post) => <PostItem key={post.id} post={post} />)}
 
       </Grid>
 

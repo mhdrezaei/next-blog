@@ -50,8 +50,7 @@ function SinglePost(props) {
       code:({node , ...props}) => {
         const {className , children} = {...props};
         const lang = className.split("-");
-        console.log(lang)
-        return <SyntaxHighlighter language={lang[1]}  children={children} style={atomDark} />
+        return <SyntaxHighlighter language={lang[1]}  style={atomDark} >{children}</SyntaxHighlighter>
       }
     // image(image) {
     //    return( <Image

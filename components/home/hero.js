@@ -41,7 +41,7 @@ function Hero() {
             height={300}
           />
         </div>
-        <h1 className="hero-title"> Hi , I'm Mohammad Rezaei </h1>
+        <h1 className="hero-title"> Hi , I&apos;m Mohammad Rezaei </h1>
         <p className="hero-description">
           this blog is about develompment Front-end like React
         </p>
