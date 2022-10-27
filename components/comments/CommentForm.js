@@ -7,6 +7,7 @@ import { Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import CircularProgress from "@mui/material/CircularProgress";
 import Notification from "../ui/notification";
+import ShowComments from "./showComments";
 const Wrapper = styled("div")({
   position: "relative",
   backgroundColor: theme.palette.secondary.main,
@@ -26,10 +27,11 @@ const Wrapper = styled("div")({
   },
 });
 
-async function sendFeedbackData(commentDetal) {
-  const response = await fetch("/api/contact", {
+async function sendFeedbackData(commentDetail) {
+  console.log(commentDetail);
+  const response = await fetch("/api/feedbacks", {
     method: "POST",
-    body: JSON.stringify(commentDetal),
+    body: JSON.stringify(commentDetail),
     headers: {
       "Content-Type": "application/json",
     },
@@ -40,10 +42,12 @@ async function sendFeedbackData(commentDetal) {
   if (!response.ok) {
     throw new Error(data.message || "something went wrong");
   }
-  return data.message;
+  return data.feedback;
 }
 
-function CommentForm() {
+function CommentForm(props) {
+  const { slug } = props;
+  console.log(slug)
   const [hasError, setHasError] = useState({
     errorName: false,
     errorEmail: false,
@@ -106,6 +110,7 @@ function CommentForm() {
       setTimeout(() => {
         const sendMessage = sendFeedbackData({
           name: enteredName,
+          slug: slug,
           email: enteredEmail,
           message: enteredMessage,
         });
@@ -181,84 +186,85 @@ function CommentForm() {
   }
 
   return (
-    <Container>
-      <Wrapper>
-        <h1 className="heading">Add your comments</h1>
-        <form onSubmit={submitHandler}>
-          <Box
-            component="div"
-            sx={{
-              "& .MuiTextField-root": { m: 1, width: "48%" },
-            }}
-            noValidate
-            autoComplete="off"
+    <Wrapper>
+      <h1 className="heading">Add your comments</h1>
+      <form onSubmit={submitHandler}>
+        <Box
+          component="div"
+          sx={{
+            "& .MuiTextField-root": { m: 1, width: "48%" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="name"
+            label="Your Name"
+            type="text"
+            name="name"
+            value={enteredName}
+            error={hasError.errorName ? true : false}
+            helperText={alert.alertName ? alert.alertName : ""}
+            onChange={nameOnChange}
+          />
+          <TextField
+            id="email"
+            label="Email Address"
+            type="email"
+            name="email"
+            value={enteredEmail}
+            error={hasError.errorEmail ? true : false}
+            helperText={alert.alertEmail ? alert.alertEmail : ""}
+            onChange={emailOnChange}
+          />
+        </Box>
+        <Box
+          component="div"
+          sx={{
+            "& .MuiTextField-root": { m: 1, width: "98%" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="message"
+            label="Message"
+            multiline
+            rows={4}
+            value={enteredMessage}
+            name="message"
+            error={hasError.errorMessage ? true : false}
+            helperText={alert.alertMessage ? alert.alertMessage : ""}
+            onChange={messageOnChange}
+          />
+        </Box>
+        <div className="btn-div">
+          <Button
+            type="submit"
+            variant="contained"
+            endIcon={
+              status === "pending" ? (
+                <CircularProgress size={20} color="inherit" />
+              ) : (
+                <SendIcon />
+              )
+            }
           >
-            <TextField
-              id="name"
-              label="Your Name"
-              type="text"
-              name="name"
-              value={enteredName}
-              error={hasError.errorName ? true : false}
-              helperText={alert.alertName ? alert.alertName : ""}
-              onChange={nameOnChange}
-            />
-            <TextField
-              id="email"
-              label="Email Address"
-              type="email"
-              name="email"
-              value={enteredEmail}
-              error={hasError.errorEmail ? true : false}
-              helperText={alert.alertEmail ? alert.alertEmail : ""}
-              onChange={emailOnChange}
-            />
-          </Box>
-          <Box
-            component="div"
-            sx={{
-              "& .MuiTextField-root": { m: 1, width: "98%" },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              id="message"
-              label="Message"
-              multiline
-              rows={4}
-              value={enteredMessage}
-              name="message"
-              error={hasError.errorMessage ? true : false}
-              helperText={alert.alertMessage ? alert.alertMessage : ""}
-              onChange={messageOnChange}
-            />
-          </Box>
-          <div className="btn-div">
-            <Button
-              type="submit"
-              variant="contained"
-              endIcon={
-                status === "pending" ? (
-                  <CircularProgress size={20} color="inherit" />
-                ) : (
-                  <SendIcon />
-                )
-              }
-            >
-              Send
-            </Button>
-          </div>
-          {notification && (
-            <Notification
-              status={notification.status}
-              title={notification.title}
-              message={notification.message}
-            />
-          )}
-        </form>
-      </Wrapper>
-    </Container>
+            Send
+          </Button>
+        </div>
+        {notification && (
+          <Notification
+            status={notification.status}
+            title={notification.title}
+            message={notification.message}
+          />
+        )}
+      </form>
+      <hr/>
+
+      <ShowComments/>
+    </Wrapper>
   );
 }
 
