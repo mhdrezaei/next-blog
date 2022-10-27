@@ -1,12 +1,18 @@
-import React from 'react'
-import CommentForm from './CommentForm'
+import { Container } from "@mui/system";
+import React from "react";
+import CommentForm from "./CommentForm";
+import ShowComments from "./showComments";
 
-function Comments() {
+function Comments(props) {
+  const {feedbacks , slug} = props;
   return (
     <div>
-        <CommentForm />
+    <Container>
+      <CommentForm slug={slug} />
+      <ShowComments comments={feedbacks} />
+    </Container>
     </div>
-  )
+  );
 }
 
-export default Comments
+export default Comments;
