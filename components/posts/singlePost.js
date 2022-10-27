@@ -36,7 +36,7 @@ const Wrapper = styled("div")({
 });
 function SinglePost(props) {
   const { post } = props;
-  const { title, description, date, image, content } = post;
+  const { slug , title, description, date, image, content } = post;
   const path = `/images/posts/${image}`;
   const newDate = new Date(date).toLocaleString("en-us", {
     year: "numeric",
@@ -75,7 +75,6 @@ function SinglePost(props) {
             <ReactMarkdown   components={cutomRenderers}>{content}</ReactMarkdown>
           </div>
         </Wrapper>
-        <Comments/>
         <IconLabelButtons path="/posts" />
       </Container>
     </div>
