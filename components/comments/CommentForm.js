@@ -47,7 +47,7 @@ async function sendFeedbackData(commentDetail) {
 
 function CommentForm(props) {
   const { slug } = props;
-  console.log(slug)
+  console.log(slug);
   const [hasError, setHasError] = useState({
     errorName: false,
     errorEmail: false,
@@ -261,9 +261,6 @@ function CommentForm(props) {
           />
         )}
       </form>
-      <hr/>
-
-      <ShowComments/>
     </Wrapper>
   );
 }
